@@ -27,7 +27,6 @@ int main()
 		// 입력
 
 		// 로직
-		player.Update(deltaTick);
 
 		// 랜더링
 		board.Render();	// 실행마다 랜덤하게 미로 생성. 

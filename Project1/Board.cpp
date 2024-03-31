@@ -27,9 +27,9 @@ void Board::Render()
 	ConsoleHelper::ShowConsoleCursor(false);
 	
 
-	for (int32 y = 0; y < 25; y++)
+	for (int32 y = 0; y < _size; y++)
 	{
-		for (int32 x = 0; x < 25; x++)
+		for (int32 x = 0; x < _size; x++)
 		{
 			ConsoleColor color = GetTileColor(Pos{ y, x });
 			ConsoleHelper::SetCursorColor(color);
@@ -59,14 +59,29 @@ void Board::GenerateMap()
 	}
 
 
-	// 짝수마다 뚫린 타일의 오른쪽 or 아래쪽을 랜덤하게 뚫어 미로를 생성하는 알고리즘
+	// 랜덤하게 미로 맵을 생성하는 알고리즘
 	for (int32 y = 0; y < _size; y++)
 	{
 		for (int32 x = 0; x < _size; x++)
 		{
 			if (x % 2 == 0 || y % 2 == 0)
 				continue;
+			if (x == _size - 2 && y == _size - 2)
 
+			// 오른쪽과 아래 길을 전부 이동할 수 있는 공간으로 뚫어주기
+			if (y == _size - 2)
+			{
+				_tile[y][x + 1] = TileType::EMPTY;
+				continue;
+			}
+
+			if (x == _size - 2)
+			{
+				_tile[y + 1][x] = TileType::EMPTY;
+				continue;
+			}
+
+			// 짝수 타일의 오른쪽이나 아래 랜덤하게 뚫기
 			const int randValue = ::rand() % 2;
 			if (randValue == 0)
 			{
@@ -78,12 +93,6 @@ void Board::GenerateMap()
 			}
 		}
 	}
-
-	// 마지막줄 타일을 벽으로 바꾸기
-	for (int32 x = 0; x < _size; x++)
-		_tile[_size - 1][x] = TileType::WALL;
-	for (int32 y = 0; y < _size; y++)
-		_tile[y][_size - 1] = TileType::WALL;
 }
 
 TileType Board::GetTileType(Pos pos)

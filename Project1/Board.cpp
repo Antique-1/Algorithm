@@ -67,6 +67,7 @@ void Board::GenerateMap()
 			if (x % 2 == 0 || y % 2 == 0)
 				continue;
 			if (x == _size - 2 && y == _size - 2)
+				continue;
 
 			// 오른쪽과 아래 길을 전부 이동할 수 있는 공간으로 뚫어주기
 			if (y == _size - 2)

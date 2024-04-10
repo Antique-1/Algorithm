@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <iostream>
 #include <vector>
+#include <stack>
 using namespace std;
 
 struct Pos

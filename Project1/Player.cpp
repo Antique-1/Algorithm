@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Board.h"
 
+
 void Player::Init(Board* board)
 {
 	_pos = board->GetEnterPos();
@@ -51,6 +52,31 @@ void Player::Init(Board* board)
 			_dir = (_dir + 1) % DIR_COUNT; // 방향을 반시계 순서대로 정의해 놓은것을 이용한 간략한 코드.
 		}
 	}
+
+
+	stack<Pos> s;
+
+	for (int i = 0; i < _path.size() - 1; i++)
+	{
+		if (s.empty() == false && s.top() == _path[i + 1])
+			s.pop();
+		else
+			s.push(_path[i]);
+	}
+
+	if (_path.empty() == false)
+		s.push(_path.back());
+
+	vector<Pos> path;
+	while (s.empty() == false)
+	{
+		path.push_back(s.top());
+		s.pop();
+	}
+
+	reverse(path.begin(), path.end());
+
+	_path = path;
 }
 
 void Player::Update(uint64 deltaTick)
